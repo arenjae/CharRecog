@@ -1,10 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
 </head>
 <body>
+    <canvas id="drawpad" width="490" height="220"></canvas>
 
+    <script type="text/javascript">
+
+        context = document.getElementById('drawpad').getContext("2d");
+        $canvas = $('#canvas');
+        $canvas.mousedown(function(e){
+            paint = true;
+            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+            redraw();
+        });
+
+        $canvas.mousemove(function(e){
+            if(paint){
+                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                redraw();
+            }
+        });
+
+        $canvas.mouseup(function(){
+            paint = false;
+        });
+
+        $canvas.mouseleave(function(){
+            paint = false;
+        });
+
+        var clickX = [];
+        var clickY = [];
+        var clickDrag = [];
+        var paint;
+
+        function addClick(x, y, dragging)
+        {
+            clickX.push(x);
+            clickY.push(y);
+            clickDrag.push(dragging);
+        }
+
+        function redraw(){
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+            context.strokeStyle = "#df4b26";
+            context.lineJoin = "round";
+            context.lineWidth = 5;
+
+            for(var i=0; i < clickX.length; i++) {
+                context.beginPath();
+                if(clickDrag[i] && i){
+                    context.moveTo(clickX[i-1], clickY[i-1]);
+                }else{
+                    context.moveTo(clickX[i]-1, clickY[i]);
+                }
+                context.lineTo(clickX[i], clickY[i]);
+                context.closePath();
+                context.stroke();
+            }
+        }
+    </script>
 </body>
 </html>
