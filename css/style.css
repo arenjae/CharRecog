@@ -1,7 +1,11 @@
-#test {
+#drawpad {
     width:500px;
     height:500px;
-    margin:50px;
-
+    /*margin:0px;*/
+    margin-top: 30px;
+    position: absolute;
     background-color:#CCCCCC;
+}
+button {
+    position: absolute;
 }
