@@ -11,6 +11,11 @@ output {
     margin-left: 100px;
 }
 
-button {
+#reset {
     position: absolute;
+}
+
+#evaluate {
+    margin-left: 50px;
+    position: relative;
 }
