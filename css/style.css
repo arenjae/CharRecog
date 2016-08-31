@@ -1,15 +1,15 @@
 #drawpad {
     /*width:280px;*/
     /*height:280px;*/
-    margin-top: 30px;
+    margin-top: 60px;
     position: absolute;
     background-color:#FFFFFF;
     border:2px solid;
 }
 
-output {
-    position: absolute;
-    margin-left: 100px;
+#output {
+    position: fixed;
+    font-size: 30px;
 }
 
 #reset {
