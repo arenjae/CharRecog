@@ -235,6 +235,7 @@ class Network{
         //     a = sigmoid(math.dot(this.weights[w],a)+this.biases[b]);
         // }
         // return a;
+
         // compute layer2 output
         var out2 = [];
         for (var i=0; i<this.w12.length; i++) {
