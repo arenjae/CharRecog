@@ -60,7 +60,6 @@ function clearCanvas(){
 }
 
 function redraw(){
-
     ctx.beginPath();
     ctx.strokeStyle = '#000000';
     ctx.lineJoin = "round";
@@ -70,9 +69,4 @@ function redraw(){
     ctx.lineTo(clickX[1], clickY[1]);
     ctx.stroke();
     ctx.closePath();
-}
-
-function evaluateCanvas(){
-
-
 }
