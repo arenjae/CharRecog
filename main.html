@@ -13,15 +13,15 @@
 
 </head>
 <body>
-    <h1>Neural Network Digit Recognizer</h1>
+    <h1>Neural Network Number Recognizer</h1>
     <div class="container">
         <div id="bar">
             <button id="reset" onclick="clearCanvas()">reset</button>
             <button id="evaluate" onclick="recognize()">evaluate</button>
             <div id="input"></div>
-            <div id="output"></div>
         </div>
-        <canvas id="drawpad" width="280" height="280"></canvas>
+        <canvas style="margin-top: 60px" id="drawpad" width="200" height="200"></canvas>
+        <div style="position: fixed;font-size: 30px" id="output">NeuNet Says: write something!</div>
     </div>
 
 
@@ -29,8 +29,6 @@
     <script type="text/javascript" src="js/canvas.js"></script>
     <script type="text/javascript" src="js/neural.js"></script>
 
-
-    <div style="margin-bottom:10px;"></div>
     <script type="text/javascript">
 
         // This section was created with the help of http://myselph.de/neuralNet.html.
@@ -67,9 +65,19 @@
         // to give a 28x28 grayscale image; then, computes class probability via neural network
         function recognize() {
 
-            // convert RGBA image to a grayscale array, then compute bounding rectangle and center of mass
-            // now bin image into 10x10 blocks (giving a 28x28 image)
-            var imgData = ctx.getImageData(0, 0, 280, 280);
+
+            //Copy 200x200 canvas from user and center on 280x280 canvas
+            //so that there is 40px of whitespace padding. This helps the
+            //Neural Network recognize the number better.
+
+            var copyCan = document.createElement("canvas");
+            copyCan.width = copyCan.height  = 280;
+            var copyCtx = copyCan.getContext("2d");
+            copyCtx.drawImage(document.getElementById('drawpad'),40,40);
+
+
+
+            var imgData = copyCtx.getImageData(0, 0, 280, 280);
             var grayscaleImg = imageDataToGrayscale(imgData);
             var inputArr = new Array(784);
             for (var y = 0; y < 28; y++) {
@@ -86,7 +94,7 @@
             }
 
             var net = new Network();
-            document.getElementById('output').innerHTML=net.evaluate(inputArr).toString();
+            document.getElementById('output').innerHTML="NeuNet Says: " + net.evaluate(inputArr).toString();
         }
 
     </script>

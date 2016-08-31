@@ -56,7 +56,7 @@ function addClick(x, y, dragging)
 
 function clearCanvas(){
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Clears the canvas
-    document.getElementById('output').innerHTML='';
+    document.getElementById('output').innerHTML='NeuNet Says: write something!';
 }
 
 function redraw(){
@@ -65,7 +65,7 @@ function redraw(){
     ctx.strokeStyle = '#000000';
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
-    ctx.lineWidth = 20;
+    ctx.lineWidth = 15;
     ctx.moveTo(clickX[0], clickY[0]);
     ctx.lineTo(clickX[1], clickY[1]);
     ctx.stroke();
