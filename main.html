@@ -1,3 +1,4 @@
+<!--Created by rae on 8/19/16.-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +18,6 @@
         <div id="bar">
             <button id="reset" onclick="clearCanvas()">reset</button>
             <button id="evaluate" onclick="recognize()">evaluate</button>
-            <div style="padding-bottom:5px;"><input type="checkbox" id="preprocessing"><span style="margin-left:5px;">Display Preprocessing</span></div>
             <div id="input"></div>
             <div id="output"></div>
         </div>
@@ -32,20 +32,15 @@
 
     <div style="margin-bottom:10px;"></div>
     <script type="text/javascript">
-        // some of the code below was taken from a stackoverflow flag I cannot find anymore, and adapted to my needs.
-        // Thanks a ton to the original author!
-        var ctx;
 
-        // the neural network's weights (unit-unit weights, and unit biases)
+        // This section was created with the help of http://myselph.de/neuralNet.html.
         // training was done in Matlab with the MNIST dataset.
         // this data is for a 784-200-10 unit, with logistic non-linearity in the hidden and softmax in the output layer.
         // The input is a [-1;1] gray level image, background == 1, 28x28 pixels linearized in column order (i.e. column1(:); column2(:); ...)
         // i-th output being the maximum means the network thinks the input encodes (i-1)
         // the weights below showed a 1.92% error rate on the test data set (9808/10000 digits recognized correctly).
         // neural net with one hidden layer; sigmoid for hidden, softmax for output
-        // take canvas image and convert to grayscale. Mainly because my
-        // own functions operate easier on grayscale, but some stuff like
-        // resizing and translating is better done with the canvas functions
+        // take canvas image and convert to grayscale.
 
         function imageDataToGrayscale(imgData) {
             var grayscaleImg = [];
