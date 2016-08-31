@@ -32,16 +32,21 @@ $canvas.mousemove(function(e){
 
 $canvas.mouseup(function(){
     paint = false;
-    clickDrag = [];
+    clickDrag.push(false);
 });
 
 $canvas.mouseleave(function(){
     paint = false;
+    clickDrag.push(false);
 });
 
 
 function addClick(x, y, dragging)
 {
+    if (clickDrag.pop() == false){
+        clickX[0] = clickX[1] = x;
+        clickY[0] = clickY[1] = y;
+    }
     clickX[0]=clickX[1];
     clickY[0]=clickY[1];
     clickX[1]=x;
@@ -60,7 +65,7 @@ function redraw(){
     ctx.strokeStyle = '#000000';
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 20;
     ctx.moveTo(clickX[0], clickY[0]);
     ctx.lineTo(clickX[1], clickY[1]);
     ctx.stroke();
@@ -68,9 +73,6 @@ function redraw(){
 }
 
 function evaluateCanvas(){
-    //
-    // var dataURL = document.getElementById('drawpad').toDataURL("image/jpeg",1.0);
-    // var net = new Network();
-    // $('#output').html(net.evaluate(dataURL));
+
 
 }
