@@ -1,9 +1,10 @@
 #drawpad {
-    width:500px;
-    height:500px;
+    /*width:280px;*/
+    /*height:280px;*/
     margin-top: 30px;
     position: absolute;
-    background-color:#CCCCCC;
+    background-color:#FFFFFF;
+    border:2px solid;
 }
 
 output {

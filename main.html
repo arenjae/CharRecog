@@ -11,49 +11,48 @@
     <link rel="stylesheet" href="css/style.css">
 
 </head>
-<!--<body>-->
+<body>
+    <h1>Neural Network Digit Recognizer</h1>
+    <div class="container">
+        <div id="bar">
+            <button id="reset" onclick="clearCanvas()">reset</button>
+            <button id="evaluate" onclick="recognize()">evaluate</button>
+            <div style="padding-bottom:5px;"><input type="checkbox" id="preprocessing"><span style="margin-left:5px;">Display Preprocessing</span></div>
+            <div id="input"></div>
+            <div id="output"></div>
+        </div>
+        <canvas id="drawpad" width="280" height="280"></canvas>
+    </div>
 
-    <!--<div id="test">-->
-        <!--<div id="bar">-->
-            <!--<button id="reset" onclick="clearCanvas()">reset</button>-->
-            <!--<button id="evaluate" onclick="evaluateCanvas()">evaluate</button>-->
-            <!--<output id="output">Output</output>-->
-        <!--</div>-->
-        <!--<canvas id="drawpad" width="28" height="28"></canvas>-->
-    <!--</div>-->
 
 
+    <script type="text/javascript" src="js/canvas.js"></script>
+    <script type="text/javascript" src="js/neural.js"></script>
 
-    <!--<script type="text/javascript" src="js/canvas.js"></script>-->
-    <!--<script type="text/javascript" src="js/neural.js"></script>-->
-
-<!--</body>-->
+</body>
 <!--</html>-->
 
 <body style="padding:5px;">
 
 <div class="container bs-docs-container">
-    <div id="dbgOutput">
-    </div>
-    <h1>Neural Net for Handwritten Digit Recognition</h1>
-    <div class="container">
-        <div><p>Draw a digit in the box below and click the "recognize" button.</p></div>
-        <div class="container" style="float:left;">
-            <div>
-                <canvas id="can" width="280" height="280" style="top:10%;left:10%;border:2px solid;"></canvas>
-            </div>
-            <div class="container">
-                <div style="padding-bottom:5px;"><input type="checkbox" id="preprocessing"><span style="margin-left:5px;">Display Preprocessing</span></div>
-                <div style="float:left;padding-right:10px;"><input type="button" value="clear" id="clr" size="23" onclick="erase()"></div>
-                <div style="float:left;"><input type="button" value="recognize" id="recognize" size="23" onclick="recognize()"></div>
-                <div id="nnInput"></div>
-            </div>
-        </div>
-        <div style="float:left;font-size:200px;margin-left:80px;" id="nnOut"></div>
-    </div>
+    <!--<div class="container">-->
+        <!--<div><p>Draw a digit in the box below and click the "recognize" button.</p></div>-->
+        <!--<div class="container" style="float:left;">-->
+            <!--<div>-->
+                <!--<canvas id="can" width="280" height="280" style="top:10%;left:10%;border:2px solid;"></canvas>-->
+            <!--</div>-->
+            <!--<div class="container">-->
+                <!--<div style="padding-bottom:5px;"><input type="checkbox" id="preprocessing"><span style="margin-left:5px;">Display Preprocessing</span></div>-->
+                <!--<div style="float:left;padding-right:10px;"><input type="button" value="clear" id="clr" size="23" onclick="erase()"></div>-->
+                <!--<div style="float:left;"><input type="button" value="recognize" id="recognize" size="23" onclick="recognize()"></div>-->
+                <!--<div id="nnInput"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="float:left;font-size:200px;margin-left:80px;" id="nnOut"></div>-->
+    <!--</div>-->
 
     <div style="margin-bottom:10px;"></div>
-    <script type="text/javascript" src="js/neural.js"></script>
+    <!--<script type="text/javascript" src="js/neural.js"></script>-->
     <script type="text/javascript">
         // some of the code below was taken from a stackoverflow flag I cannot find anymore, and adapted to my needs.
         // Thanks a ton to the original author!
@@ -99,7 +98,7 @@
                     imgData.data[offset+3] = 255;
                     // simply take red channel value. Not correct, but works for
                     // black or white images.
-                    grayscaleImg[y][x] = imgData.data[y*4*imgData.width + x*4 + 0] / 255;
+                    grayscaleImg[y][x] = imgData.data[y*4*imgData.width + x*4] / 255;
                 }
             }
             return grayscaleImg;
@@ -158,18 +157,17 @@
                 }
             }
 
-            var maxIndex = 0;
-            var net = new Network(nnInput);
-            var nnOutput = net.feedforward();
+//            var maxIndex = 0;
+            var net = new Network();
 
-            nnOutput.reduce(function(p,c,i){if(p<c) {maxIndex=i; return c;} else return p;});
-            console.log('maxIndex: '+maxIndex);
-            document.getElementById('nnOut').innerHTML=maxIndex;
+//            console.log('maxIndex: '+maxIndex);
+            console.log('got somewhere');
+            document.getElementById('output').innerHTML=net.evaluate(nnInput).toString();
             clearBeforeDraw = true;
         }
 
         function init() {
-            canvas = document.getElementById('can');
+            canvas = document.getElementById('drawpad');
             ctx = canvas.getContext("2d");
 
             canvas.addEventListener("mousemove", function (e) {
@@ -215,16 +213,10 @@
                 }
 
                 if (e.pageX != undefined && e.pageY != undefined) {
-                    currX = e.pageX-canvas.offsetLeft;
-                    currY = e.pageY-canvas.offsetTop;
-                } else {
-                    currX = e.clientX + document.body.scrollLeft
-                            + document.documentElement.scrollLeft
-                            - canvas.offsetLeft;
-                    currY = e.clientY + document.body.scrollTop
-                            + document.documentElement.scrollTop
-                            - canvas.offsetTop;
+                    currX = e.pageX - canvas.offsetLeft;
+                    currY = e.pageY - canvas.offsetTop;
                 }
+
                 //draw a circle
                 ctx.beginPath();
                 ctx.lineWidth = 1;
@@ -238,7 +230,6 @@
             }
             if (res == 'up' || res == "out") {
                 paintFlag = false;
-                //console.log(paths);
             }
 
             if (res == 'move') {
@@ -249,15 +240,8 @@
                     if (e.pageX != undefined && e.pageY != undefined) {
                         currX = e.pageX-canvas.offsetLeft;
                         currY = e.pageY-canvas.offsetTop;
-                    } else {
-                        currX = e.clientX + document.body.scrollLeft
-                                + document.documentElement.scrollLeft
-                                - canvas.offsetLeft;
-                        currY = e.clientY + document.body.scrollTop
-                                + document.documentElement.scrollTop
-                                - canvas.offsetTop;
                     }
-                    currPath = paths[paths.length-1];
+                    var currPath = paths[paths.length-1];
                     currPath[0].push(currX);
                     currPath[1].push(currY);
                     paths[paths.length-1] = currPath;
